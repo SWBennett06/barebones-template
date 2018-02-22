@@ -3,11 +3,6 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-
-const extractSass = new ExtractTextPlugin({
-    filename: '[name].[contenthash].css',
-});
 
 module.exports = {
     entry: ['./src/index.ts', './src/main.scss'],
@@ -25,7 +20,6 @@ module.exports = {
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        extractSass,
         new UglifyJSPlugin()
     ],
     output: {
@@ -36,14 +30,14 @@ module.exports = {
         rules: [
             { test: /\.html$/, use: ['html-loader']},
             { test: /\.tsx?$/, use: ['ts-loader']},
-            { test: /\.(sass|scss)$/, use: extractSass.extract({
-                use: [{
-                        loader: 'css-loader'
-                    }, {
-                        loader: 'sass-loader'
-                    }
-                ], fallback: 'style-loader' })
-            }
+            { test: /\.(sass|scss)$/, use: [{
+                    loader: 'style-loader'
+                },{
+                    loader: 'css-loader'
+                }, {
+                    loader: 'sass-loader'
+                }
+            ]}
         ]
     },
     resolve: {
