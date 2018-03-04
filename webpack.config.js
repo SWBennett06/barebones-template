@@ -5,6 +5,7 @@ const webpack = require('webpack');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
+    mode: 'development',
     entry: ['./src/index.ts', './src/main.scss'],
     devtool: 'inline-source-map',
     devServer: {
@@ -20,7 +21,9 @@ module.exports = {
         }),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        new UglifyJSPlugin()
+        new UglifyJSPlugin({
+            sourceMap: true
+        })
     ],
     output: {
         filename: '[name].[hash].bundle.js',
